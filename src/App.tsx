@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import INGREDIENTS from './components/Ingredients/Ingredients';
+import CalculateTotalPrice from './components/CalculateTotal';
+import BurgerBun from './components/BurgerBun';
+import IngredientsShow from './components/IngredientsShow';
 import './App.css';
 
 function App() {
   const [ingredients, setIngredients] = useState([
     {name: 'Meat', count: 0},
-    {name: 'Bekon', count: 0},
+    {name: 'Bacon', count: 0},
     {name: 'Salad', count: 0},
     {name: 'Cheese', count: 0},
   ]);
@@ -23,44 +25,27 @@ function App() {
       item.name === name ? {...item, count: item.count + 1} : item));
   };
 
-  const IngredientsShow = () => {
-    return INGREDIENTS.map((ingredient, index) => {
-    const amount = ingredients.find((item) => item.name === ingredient.name)?.count || 0;
-
-    return (
-      <div key={index} className='card my-3 mx-5'>
-        <div className='card-body'>
-          <div className='d-flex align-items-center'>
-            <div className='col'>
-              {ingredient.name}
-            </div>
-            <div className='col px-5'>
-              {ingredient.price} сом
-            </div>
-            <div className='col'>
-              x {amount}
-            </div>
-            <div className='col'>
-              <button onClick={() => addIngredient(ingredient.name)} className='btn btn-success'>Add</button>
-            </div>
-            <div className='col ms-3'>
-              <button onClick={() => removeIngredient(ingredient.name)} className='btn btn-danger'>Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      );
-    });
-  };
-  
-
   return (
     <>
       <div className='container d-flex'>
         <div className='ingredients-block'>
-          {IngredientsShow()}
+          <IngredientsShow 
+            ingredients={ingredients}
+            removeIngredient={removeIngredient}
+            addIngredient={addIngredient}
+          />
+          Total: {CalculateTotalPrice(ingredients)} (bun price: 30)
         </div>
-        <div className='my-3'>Fashion</div>
+        <div className='my-3'>
+          <div className="Burger">
+          <div className="BreadTop">
+            <div className="Seeds1"></div>
+            <div className="Seeds2"></div>
+          </div>
+          {BurgerBun(ingredients)}
+          <div className="BreadBottom"></div>
+          </div>
+        </div>
       </div>
     </>
   )
